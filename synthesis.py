@@ -93,7 +93,7 @@ if __name__ == "__main__":
     save_labels_dir = os.path.join(save_dir, "labels")
     os.makedirs(save_images_dir, exist_ok=True)
     os.makedirs(save_labels_dir, exist_ok=True)
-
+    
     list_object_path = glob.glob(f"{args.objects}/*/*")
     list_background_path = glob.glob(f"{args.backgrounds}/*")
 
@@ -101,10 +101,10 @@ if __name__ == "__main__":
     random.shuffle(list_object_path)
 
     try:
-        with open('class_mapping.json', 'r') as f:
+        with open(args.class_mapping, 'r') as f:
             class_mapping_dict = json.load(f)
     except:
-        with open('class_mapping.json', 'w') as f:
+        with open(args.class_mapping, 'w') as f:
             f.write(R"{}")
             class_mapping_dict = {}
 
@@ -131,7 +131,7 @@ if __name__ == "__main__":
         with open(save_label_path, "w") as f:
             f.write(save_label_str)
 
-    with open('class_mapping.json', 'w') as f:
+    with open(args.class_mapping, 'w') as f:
         json.dump(class_mapping_dict, f)
 
 
