@@ -1,0 +1,7 @@
+__pycache__/
+venv/
+
+backgrounds/
+objects/
+synthesis/
+class_mapping.json
