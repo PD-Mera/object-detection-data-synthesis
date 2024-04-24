@@ -84,6 +84,7 @@ if __name__ == "__main__":
     parser.add_argument('--objects', default='./objects', type=str, help='Path to objects images directory')
     parser.add_argument('--savename', default='./synthesis', type=str, help='Path to save synthesis images directory')
     parser.add_argument('--number', default=1, type=int, help='Number of generate labels for each class')
+    parser.add_argument('--class_mapping', default='./class_mapping.json', type=str, help='Path to class mapping file')
 
     args = parser.parse_args()
 

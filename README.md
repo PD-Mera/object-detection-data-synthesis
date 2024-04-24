@@ -5,5 +5,5 @@
 Simply run
 
 ``` bash
-python synthesis.py --backgrounds ./backgrounds --objects ./objects --savename ./synthesis --number 1000
+python synthesis.py --backgrounds ./backgrounds --objects ./objects --savename ./synthesis --class_mapping ./class_mapping.json --number 1000
 ```
