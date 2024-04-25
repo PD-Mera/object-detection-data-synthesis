@@ -64,6 +64,19 @@ def random_resize(image, start_size = 480, stop_size = 640):
 
     return resized_image
 
+def random_reduce_transparency(image, rate = (0.5, 1.0)):
+    image_cv2 = to_cv2(image)
+
+    rate_ = random.uniform(rate[0], rate[1])
+
+    a_channel = image_cv2[:, :, 3]
+    a_channel = np.where(a_channel > 0, a_channel * rate_, 0)
+    image_cv2[:, :, 3] = a_channel
+
+    image_pil = to_pil(image_cv2)
+
+    return image_pil
+
 def get_iou(bb1, bb2):
     """
     Calculate the Intersection over Union (IoU) of two bounding boxes.

@@ -9,7 +9,7 @@ import cv2
 from PIL import Image
 
 from helpers import is_image_file, adjust_background_size, random_resize, \
-                    to_pil, to_cv2, get_iou, bboxes_to_yolo_labels
+                    to_pil, to_cv2, get_iou, bboxes_to_yolo_labels, random_reduce_transparency
 
 MAX_OVERLAP_IOU = 0.3
 MAX_OVERLAP_RETRY = 10
@@ -37,8 +37,8 @@ def paste_object_to_background(object_image,
 
 def paste_list_object_to_background(list_object_path, 
                                background_image, 
-                               object_min_ratio = 0.1,
-                               object_max_ratio = 0.6):
+                               object_min_ratio = 0.2,
+                               object_max_ratio = 0.4):
     list_object_image = [Image.open(object_path).convert("RGBA") for object_path in list_object_path]
     
     bboxes = []
@@ -53,6 +53,7 @@ def paste_list_object_to_background(list_object_path,
         min_object_size = int(min(background_h, background_w) * object_min_ratio)
         max_object_size = int(min(background_h, background_w) * object_max_ratio)
         object_image_pil = random_resize(object_image_pil, start_size = min_object_size, stop_size = max_object_size)
+        object_image_pil = random_reduce_transparency(object_image_pil, rate=(0.5, 1.0))
         
         object_w, object_h = object_image_pil.size
 
@@ -88,9 +89,8 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    save_dir = args.savename
-    save_images_dir = os.path.join(save_dir, "images")
-    save_labels_dir = os.path.join(save_dir, "labels")
+    save_images_dir = os.path.join(args.savename, "images")
+    save_labels_dir = os.path.join(args.savename, "labels")
     os.makedirs(save_images_dir, exist_ok=True)
     os.makedirs(save_labels_dir, exist_ok=True)
     
