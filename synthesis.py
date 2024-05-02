@@ -16,27 +16,6 @@ from helpers import is_image_file, to_pil, to_cv2, adjust_background_size, \
 MAX_OVERLAP_IOB = 0.2
 MAX_OVERLAP_RETRY = 10
 
-def paste_object_to_background(object_image, 
-                               background_image, 
-                               object_min_ratio = 0.1,
-                               object_max_ratio = 0.6):
-    object_image_pil = to_pil(object_image)
-    background_image_pil = to_pil(background_image)
-
-    background_w, background_h = background_image_pil.size
-
-    min_object_size = int(min(background_h, background_w) * object_min_ratio)
-    max_object_size = int(min(background_h, background_w) * object_max_ratio)
-    object_image_pil = random_resize(object_image_pil, start_size = min_object_size, stop_size = max_object_size)
-    
-    object_w, object_h = object_image_pil.size
-
-    x_start = random.randrange(0, background_w - object_w)
-    y_start = random.randrange(0, background_h - object_h)
-    bbox = {"x1": x_start, "y1": y_start, "x2": x_start + object_image_pil.size[0], "y2": y_start + object_image_pil.size[1]}
-    background_image.paste(object_image_pil, (x_start, y_start), object_image_pil)
-    return background_image, bbox
-
 def paste_list_object_to_background(list_object_path, 
                                background_image, 
                                object_min_ratio = 0.2,
@@ -99,11 +78,15 @@ if __name__ == "__main__":
     parser.add_argument('--savename', default='./synthesis', type=str, help='Path to save synthesis images directory')
     parser.add_argument('--number', default=1, type=int, help='Number of generate labels for each class')
     parser.add_argument('--class_mapping', default='./class_mapping.json', type=str, help='Path to class mapping file')
+    parser.add_argument('--class_txt', default=None, type=str, help='Path to classes.txt file')
+
 
     args = parser.parse_args()
 
-    save_images_dir = os.path.join(args.savename, "images")
-    save_labels_dir = os.path.join(args.savename, "labels")
+    save_dir = args.savename
+    os.makedirs(save_dir, exist_ok=True)
+    save_images_dir = os.path.join(save_dir, "images")
+    save_labels_dir = os.path.join(save_dir, "labels")
     os.makedirs(save_images_dir, exist_ok=True)
     os.makedirs(save_labels_dir, exist_ok=True)
     
@@ -121,20 +104,25 @@ if __name__ == "__main__":
             f.write(R"{}")
             class_mapping_dict = {}
 
+    all_length = len(list_object_path)
+    process_length = 0
     while len(list_object_path) > 0:
         random_number_labels = random.randint(1, 5)
         random_number_labels = random_number_labels if random_number_labels < len(list_object_path) else len(list_object_path)
         list_process_object_path = []
         for _ in range(random_number_labels):
             list_process_object_path.append(list_object_path.pop())
+            process_length += 1
 
+        print(f"Processing {process_length}/{all_length}")
 
         background_path = random.choice(list_background_path)
-        background_image_pil = Image.open(background_path)
+        background_image_pil = Image.open(background_path).convert("RGB")
+        background_image_pil = adjust_background_size(background_image_pil, 640)
 
         background_image, bboxes = paste_list_object_to_background(list_process_object_path, background_image_pil)
 
-        print(bboxes)
+        # print(bboxes)
         save_name = str(uuid.uuid4())
         save_image_path = os.path.join(save_images_dir, f"{save_name}.jpg")
         save_label_path = os.path.join(save_labels_dir, f"{save_name}.txt")
@@ -146,6 +134,16 @@ if __name__ == "__main__":
 
     with open(args.class_mapping, 'w') as f:
         json.dump(class_mapping_dict, f)
+
+    if args.class_txt is not None and args.class_txt.endswith(".txt"):
+        with open(args.class_txt, 'w') as f:
+            swap_dict = {}
+            for key in class_mapping_dict.keys():
+                swap_dict[class_mapping_dict[key]] = key
+
+            for i in range(len(swap_dict.keys())):
+                f.write(swap_dict[i])
+                f.write("\n")
 
 
 
