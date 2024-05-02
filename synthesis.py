@@ -8,10 +8,12 @@ import json
 import cv2
 from PIL import Image
 
-from helpers import is_image_file, adjust_background_size, random_resize, \
-                    to_pil, to_cv2, get_iou, bboxes_to_yolo_labels, random_reduce_transparency
+from helpers import is_image_file, to_pil, to_cv2, adjust_background_size, \
+                    random_resize, random_reduce_transparency, random_rotate, random_perspective_transform, \
+                    seamless_clone, \
+                    get_iob, bboxes_to_yolo_labels
 
-MAX_OVERLAP_IOU = 0.3
+MAX_OVERLAP_IOB = 0.2
 MAX_OVERLAP_RETRY = 10
 
 def paste_object_to_background(object_image, 
@@ -53,7 +55,9 @@ def paste_list_object_to_background(list_object_path,
         min_object_size = int(min(background_h, background_w) * object_min_ratio)
         max_object_size = int(min(background_h, background_w) * object_max_ratio)
         object_image_pil = random_resize(object_image_pil, start_size = min_object_size, stop_size = max_object_size)
-        object_image_pil = random_reduce_transparency(object_image_pil, rate=(0.5, 1.0))
+        object_image_pil = random_rotate(object_image_pil, degree = (-20, 20))
+        object_image_pil = random_reduce_transparency(object_image_pil, rate=(0.7, 1.0))
+        object_image_pil = random_perspective_transform(object_image_pil)
         
         object_w, object_h = object_image_pil.size
 
@@ -68,14 +72,23 @@ def paste_list_object_to_background(list_object_path,
                             "y2": y_start + object_image_pil.size[1],
                             "bg_w": background_w,
                             "bg_h": background_h,}
+            iob = 0
             for bbox in bboxes:
-                iou = get_iou(current_bbox, bbox)
-                if iou > MAX_OVERLAP_IOU:
-                    continue
+                iob = get_iob(current_bbox, bbox)
+                if iob > MAX_OVERLAP_IOB:
+                    break
+
+            if iob > MAX_OVERLAP_IOB:
+                continue
 
             break
                 
-        background_image.paste(object_image_pil, (x_start, y_start), object_image_pil)
+        if random.random() > 0.9:
+            x_center = int(x_start + object_image_pil.size[0] / 2.0)
+            y_center = int(y_start + object_image_pil.size[1] / 2.0)
+            background_image = seamless_clone(background_image, object_image_pil, x_center, y_center)     
+        else:
+            background_image.paste(object_image_pil, (x_start, y_start), object_image_pil)
         bboxes.append(current_bbox)
     return background_image, bboxes
     
