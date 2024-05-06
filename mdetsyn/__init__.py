@@ -1,0 +1,1 @@
+from .detsyn import run_synthesis

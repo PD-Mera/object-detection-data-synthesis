@@ -1,5 +1,7 @@
 __pycache__/
 venv/
+*.egg-info
+dist/
 
 backgrounds/
 objects/
