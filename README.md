@@ -1,5 +1,9 @@
 # Object Detection Data Synthesis
 
+Data Synthesis pipeline to generate object detection data
+
+<a href="https://pypi.org/project/mdetsyn/"><img alt="Alt text" src="https://img.shields.io/badge/PyPI-3775A9.svg?style=for-the-badge&logo=PyPI&logoColor=white"/></a>
+
 ## How to run
 
 ### Run with pip
