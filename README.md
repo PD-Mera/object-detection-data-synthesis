@@ -69,4 +69,4 @@ python synthesis.py --backgrounds ./backgrounds \
 
 | Background | Object | Synthesis |
 | :---: | :---: | :---: |
-| <img src="./sample/backgrounds/background-0.jpg" height="256"/>![]() | <img src="./sample/objects/vanamo/vanamo-0.png" height="256" width="auto"/> | <img src="./sample/synthesis/images/4b09b7ae-3290-45d7-afef-82a7c5cef26d.jpg" height="256"/> |
+| ![](./sample/backgrounds/background-0.jpg) | ![](./sample/objects/vanamo/vanamo-0.png) | ![](./sample/synthesis/images/4b09b7ae-3290-45d7-afef-82a7c5cef26d.jpg) |
