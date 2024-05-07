@@ -65,8 +65,21 @@ python synthesis.py --backgrounds ./backgrounds \
 
 - Output is a synthesis folder contain `images` and `labels` dir same as YOLO format
 
-- Sample visualization
+- Sample visualization:
 
-| Background | Object | Synthesis |
+| Background | Object | Synthesvis |
 | :---: | :---: | :---: |
 | ![](./sample/backgrounds/background-0.jpg) | ![](./sample/objects/vanamo/vanamo-0.png) | ![](./sample/synthesis/images/4b09b7ae-3290-45d7-afef-82a7c5cef26d.jpg) |
+
+## Support synthesis methods
+
+- Random Resize
+- Random Rotate
+- Random Transparency
+- Random Perspective Transform
+- Seamless Clone
+
+## Error and TODO
+
+- Sometimes seamless clone does not work
+- Input parameter for each augment
