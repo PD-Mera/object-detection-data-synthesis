@@ -30,5 +30,43 @@ run_synthesis(
 ### Run with command line
 
 ``` bash
-python synthesis.py --backgrounds ./backgrounds --objects ./objects --savename ./synthesis --class_mapping ./class_mapping.json --number 1000
+python synthesis.py --backgrounds ./backgrounds \
+                    --objects ./objects \
+                    --savename ./synthesis \
+                    --number 1000 \
+                    --class_mapping ./class_mapping.json \
+                    --class_txt ./classes.txt
 ```
+
+## Sample
+
+- Backgrounds folder contain background images (in any folmat)
+
+```
+├── backgrounds/
+    ├── background-0.jpg
+    ├── background-1.jpg
+    └── ...
+```
+
+- Objects folder contain object images in subfolders (the best is `.png` format with `A` channel but any format is still runnable)
+
+```
+├── objects/
+    ├── class_1/
+    │   ├── image-0.png
+    │   ├── image-1.png
+    │   └── ...
+    ├── class_2/
+    └── ...
+```
+
+- Each image in objects folder will be synthesis by `n` times with `n` is user input
+
+- Output is a synthesis folder contain `images` and `labels` dir same as YOLO format
+
+- Sample visualization
+
+| Background | Object | Synthesis |
+| :---: | :---: | :---: |
+| <img src="./sample/backgrounds/background-0.jpg" height="256"/>![]() | <img src="./sample/objects/vanamo/vanamo-0.png" height="256" width="auto"/> | <img src="./sample/synthesis/images/4b09b7ae-3290-45d7-afef-82a7c5cef26d.jpg" height="256"/> |

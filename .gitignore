@@ -7,3 +7,5 @@ backgrounds/
 objects/
 synthesis/
 class_mapping.json
+
+!sample/*
