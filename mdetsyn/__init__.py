@@ -1,1 +1,1 @@
-from .detsyn import run_synthesis
+from .detsyn import run_synthesis, create_args

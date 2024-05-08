@@ -78,3 +78,4 @@ python synthesis.py --backgrounds ./backgrounds \
 
 - [ ] Sometimes seamless clone does not work
 - [x] Input parameter for each augment
+- [ ] Add default arguments to argparse help
