@@ -67,13 +67,12 @@ def paste_list_object_to_background(list_object_path, background_image, args):
         max_object_size = int(min(background_h, background_w) * args.resize_max_ratio)
         object_image_pil = random_resize(object_image_pil, start_size = min_object_size, stop_size = max_object_size)
 
+        if random.random() < args.perspective_prob:
+            object_image_pil = random_perspective_transform(object_image_pil, transform_range=(args.perspective_min_value, args.perspective_max_value))
         if random.random() < args.rotate_prob:
             object_image_pil = random_rotate(object_image_pil, degree = (-args.rotate_max_degree, args.rotate_max_degree))
         if random.random() < args.transparency_prob:
             object_image_pil = random_reduce_transparency(object_image_pil, rate=(args.transparency_min_ratio, args.transparency_max_ratio))
-        if random.random() < args.perspective_prob:
-            object_image_pil = random_perspective_transform(object_image_pil, transform_range=(args.perspective_min_value, args.perspective_max_value))
-        
         object_w, object_h = object_image_pil.size
 
         for _ in range(args.max_overlap_retry):

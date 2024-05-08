@@ -53,11 +53,8 @@ def random_resize(image, start_size = 480, stop_size = 640):
     min_size = random.randrange(start_size, stop_size)
     new_h = int(h / long_edge * min_size)
     new_w = int(w / long_edge * min_size)
-
     resized_image = cv2.resize(image_cv2, (new_w, new_h))
-
     resized_image = to_pil(resized_image)
-
     return resized_image
 
 def random_reduce_transparency(image, rate = (0.5, 1.0)):
@@ -109,7 +106,11 @@ def random_perspective_transform(image, transform_range=(3, 10)):
     
     matrix = cv2.getPerspectiveTransform(pts1, pts2)
     warped_image = cv2.warpPerspective(image, matrix, (w, h))
-
+    new_x_min = min(new_x1, new_x2, new_x3, new_x4)
+    new_x_max = max(new_x1, new_x2, new_x3, new_x4)
+    new_y_min = min(new_y1, new_y2, new_y3, new_y4)
+    new_y_max = max(new_y1, new_y2, new_y3, new_y4)
+    warped_image = warped_image[new_y_min:new_y_max, new_x_min:new_x_max, :]
     warped_image = to_pil(warped_image)
     return warped_image
 
