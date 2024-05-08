@@ -7,7 +7,7 @@ def get_requirements_txt(requirements_path):
 
 setup( 
     name='mdetsyn', 
-    version='0.0.3', 
+    version='0.0.4', 
     description='Data Synthesis pipeline to generate object detection data', 
     long_description=open("README.md").read(),
     long_description_content_type='text/markdown',
