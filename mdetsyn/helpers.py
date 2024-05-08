@@ -228,6 +228,7 @@ def bboxes_to_yolo_labels(bboxes, class_mapping_dict):
     save_str = ""
     
     for bbox in bboxes:
+        bbox["label"] = bbox["label"].lower()
         if bbox["label"].lower() not in class_mapping_dict.keys():
             new_idx = len(class_mapping_dict.keys())
             class_mapping_dict[bbox["label"]] = new_idx
