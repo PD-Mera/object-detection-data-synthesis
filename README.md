@@ -15,16 +15,10 @@ pip install mdetsyn
 And run in python file 
 
 ``` python
-from mdetsyn import run_synthesis
+from mdetsyn import run_synthesis, create_args
 
-run_synthesis(
-    backgrounds_dir="./backgrounds", 
-    objects_dir="./objects, 
-    synthetic_save_dir="./synthesis", 
-    synthetic_number=1000, 
-    # class_mapping_path="./class_mapping.json", 
-    # class_txt_path="./classes.txt"
-)
+args = create_args()
+run_synthesis(args)
 ```
 
 ### Run with command line
@@ -67,7 +61,7 @@ python synthesis.py --backgrounds ./backgrounds \
 
 - Sample visualization:
 
-| Background | Object | Synthesvis |
+| Background | Object | Synthesis |
 | :---: | :---: | :---: |
 | ![](./sample/backgrounds/background-0.jpg) | ![](./sample/objects/vanamo/vanamo-0.png) | ![](./sample/synthesis/images/4b09b7ae-3290-45d7-afef-82a7c5cef26d.jpg) |
 
@@ -78,8 +72,9 @@ python synthesis.py --backgrounds ./backgrounds \
 - Random Transparency
 - Random Perspective Transform
 - Seamless Clone
+- Grayscale
 
 ## Error and TODO
 
-- Sometimes seamless clone does not work
-- Input parameter for each augment
+- [ ] Sometimes seamless clone does not work
+- [x] Input parameter for each augment

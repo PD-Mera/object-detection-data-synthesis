@@ -6,6 +6,7 @@ dist/
 backgrounds/
 objects/
 synthesis/
+testcase/
 class_mapping.json
 
 !sample/*

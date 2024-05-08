@@ -83,11 +83,11 @@ def random_rotate(image, degree = (-45, 45)):
 
     return image_pil
 
-def random_perspective_transform(image):
+def random_perspective_transform(image, transform_range=(3, 10)):
     image = to_cv2(image)
     
     h, w, _ = image.shape
-    split_number = random.randint(3, 10)
+    split_number = random.randint(transform_range[0], transform_range[1])
 
     new_x1 = random.randint(0, int(w / split_number))
     new_y1 = random.randint(0, int(h / split_number))
